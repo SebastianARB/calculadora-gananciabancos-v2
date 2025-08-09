@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // MOSTRAR RESULTADOS
     // =====================
     consorcio.innerHTML = `
-      <h2>Consorcio Cuenta Más Digital</h2>
+      <h2>Consorcio (Cuenta Más Digital)</h2>
       <p>Ganancia anual con comision: ${CLP(gan_consorcio_an)}</p>
       <p>Ganancia mensual con comision: ${CLP(gan_consorcio_mes)}</p>
       <hr>
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     santander.innerHTML = `
-      <h2>Santander</h2>
+      <h2>Santander (Más Lucas)</h2>
       <p>Ganancia anual bruta: ${CLP(gan_santander_an)}</p>
       <p>Ganancia mensual bruta: ${CLP(gan_santander_mes)}</p>
     `;
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     tenpo.innerHTML = `
-      <h2>Tenpo</h2>
+      <h2>Tenpo (Cuenta Remunerada)</h2>
       <p>Ganancia anual bruta: ${CLP(gan_tenpo_an)}</p>
       <p>Ganancia mensual bruta: ${CLP(gan_tenpo_mes)}</p>
     `;
