@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+
+</head>
+
+<body>
+    <header>
+        <h1>Calculadora ganancias Bancos</h1>
+    </header>
+    <main>
+        <form id="calculator-form">
+            <label for="monto">Cantidad a invertir:</label>
+            <input id="monto" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej:123" required>
+            <input id="monto_raw" name="monto" type="hidden" >
+            <button id="calcular" type="button">Calcular</button>
+
+
+        </form>
+        <div class="calculo" id="consorcio">
+
+        </div>
+        <div class="calculo" id="santander">
+
+        </div>
+        <div class="calculo" id="mercadoPago">
+
+        </div>
+        <div class="calculo" id="tenpo">
+
+        </div>
+        <p id="aproximado"></p>
+    </main>
+    <footer>
+        <p>&copy; 2025 Sebastian Arbona</p>
+    </footer>
+
+
+    <script src="js/script.js" defer></script>
+</body>
+
+</html>
