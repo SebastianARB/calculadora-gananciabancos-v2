@@ -82,8 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <h2>Consorcio Cuenta Más Digital</h2>
       <p>Ganancia anual con comision: ${CLP(gan_consorcio_an)}</p>
       <p>Ganancia mensual con comision: ${CLP(gan_consorcio_mes)}</p>
+      <hr>
       <p>Ganancia anual sin comision: ${CLP(gan_consorcio_an_n)}</p>
       <p>Ganancia mensual sin comision: ${CLP(gan_consorcio_mes_n)}</p>
+      <hr>
       <p>Comisión anual aproximada ${CLP(com_consorcio * 12)}</p>
       <p>Comision mensual aproximada ${CLP(com_consorcio)}</p>
     `;
