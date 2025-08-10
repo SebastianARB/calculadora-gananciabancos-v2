@@ -1,0 +1,29 @@
+[
+  {
+    "id": "tasa_consorcio_anual",
+    "url": "https://sitio.consorcio.cl/banca-personas/cuenta-vista",
+    "selector": ".cns-complement__tax",
+    "parse": "number_percent",
+    "notes": "Texto tipo 5,25%"
+  },
+
+  {
+    "id": "tasa_santander_anual",
+    "url": "https://banco.santander.cl/personas/planes/cuenta-mas-lucas",
+    "selector": ".content p",
+    "parse": "regex_percent",
+    "regex": "(\\d+[\\.,]\\d+%)\\s*anual",
+    "searchAll": true,
+    "notes": "Buscar cualquier párrafo que contenga '% anual'"
+  },
+  {
+    "id": "tasa_tenpo_diaria",
+    "url": "https://www.tenpo.cl/productos/cuenta-remunerada",
+    "selector": ".cf-faq-content",
+    "parse": "regex_percent",
+    "regex": "(\\d+[\\.,]?\\d*%)",
+    "searchAll": true,
+    "preClickAll": ".cf-faq-title",
+    "notes": "Abre FAQs y busca el porcentaje en todos los párrafos"
+  }
+]

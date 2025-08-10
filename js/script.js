@@ -1,143 +1,159 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("calculator-form");
-  const input = document.getElementById("monto");
-  const raw = document.getElementById("monto_raw");
-  const btn = document.getElementById("calcular");
-  const consorcio = document.getElementById("consorcio");
-  const santander = document.getElementById("santander");
-  const mercadoPago = document.getElementById("mercadoPago");
-  const aproximado = document.getElementById("aproximado");
-  const tenpo = document.getElementById("tenpo");
+// ===============================
+// script.js - Calculadora Bancos
+// ===============================
 
-  // Evita submit por Enter "natural" del formulario
-  form.addEventListener("submit", (e) => e.preventDefault());
+// --- Config: IDs que vienen del scraper (data/latest.json) ---
+const IDS = {
+  consorcioAnual: "tasa_consorcio_anual",   // % anual
+  santanderAnual: "tasa_santander_anual",   // % anual
+  tenpoDiaria: "tasa_tenpo_diaria"          // % diaria
+};
 
-  // Formato con puntos mientras escribe (solo dígitos)
-  input.addEventListener("input", () => {
-    const digits = input.value.replace(/\D/g, "");
-    if (!digits) {
-      input.value = "";
-      raw.value = "";
-      return;
-    }
-    input.value = Number(digits).toLocaleString("es-CL");
-    raw.value = digits; // valor numérico sin puntos
-  });
+// --- Ruta al JSON (ajusta si tu build cambia la carpeta) ---
+const DATA_URL = "data/latest.json";
 
-  // Función principal de cálculo y render
-  function calcular(e) {
-    if (e) e.preventDefault();
+// --- Debug opcional: se activa en localhost ---
+const DEBUG = location.hostname === "localhost";
+const dlog = (...a) => { if (DEBUG) console.log(...a); };
 
-    if (!input.value) {
-      input.reportValidity(); // Muestra el mensaje nativo "Rellena este campo"
-      return;
-    }
+// --- Utilidades numéricas ---
+const pctAdecimal     = (p) => (p ?? 0) / 100;                 // 5.25 -> 0.0525
+const diariaA_mensual = (rDia, dias = 30)  => Math.pow(1 + rDia, dias) - 1;
+const diariaA_anual   = (rDia, dias = 365) => Math.pow(1 + rDia, dias) - 1;
+const anualA_mensual  = (rAnual)           => Math.pow(1 + rAnual, 1 / 12) - 1;
+const mensualA_anual  = (rMensual)         => Math.pow(1 + rMensual, 12) - 1;
 
-    const monto = Number(raw.value);
-
-    /* Leyenda de abreviaturas
-       an   = anual
-       mes  = mensual
-       n    = neto (descontando comisión)
-    */
-
-    // Tasas de interés anual por institución
-    const int_anual_consorcio = 0.0525; // 5.25% anual - Consorcio
-    const int_anual_santander = 0.016; // 1.6% anual  - Santander
-    const int_anual_mercadoPago = 0.046; // 4.6% anual  - Mercado Pago
-    const int_anual_tenpo = 0.06; // 6% anual    - Tenpo
-
-    // Comisiones fijas
-    const com_consorcio = 3500; // Comisión anual Consorcio en CLP
-
-    // Helper para CLP (sin decimales)
-    const CLP = (n) => Math.round(n).toLocaleString("es-CL") + " CLP";
-
-    // =====================
-    // CÁLCULOS DE GANANCIAS
-    // =====================
-
-    // CONSORCIO
-    const gan_consorcio_an = monto * int_anual_consorcio; // Ganancia anual bruta
-    const gan_consorcio_mes = gan_consorcio_an / 12; // Ganancia mensual bruta
-    const gan_consorcio_an_n = gan_consorcio_an - com_consorcio * 12; // Ganancia anual neta
-    const gan_consorcio_mes_n = gan_consorcio_an / 12 - com_consorcio; // Ganancia mensual neta
-
-    // SANTANDER
-    const gan_santander_an = monto * int_anual_santander; // Ganancia anual bruta
-    const gan_santander_mes = gan_santander_an / 12; // Ganancia mensual bruta
-
-    // MERCADO PAGO
-    const gan_mercadoPago_an = monto * int_anual_mercadoPago; // Ganancia anual bruta
-    const gan_mercadoPago_mes = gan_mercadoPago_an / 12; // Ganancia mensual bruta
-
-    // TENPO
-    const gan_tenpo_an = monto * int_anual_tenpo; // Ganancia anual bruta
-    const gan_tenpo_mes = gan_tenpo_an / 12; // Ganancia mensual bruta
-
-    // =====================
-    // MOSTRAR RESULTADOS
-    // =====================
-    consorcio.innerHTML = `
-      <h2>Consorcio (Cuenta Más Digital)</h2>
-      <p>Ganancia anual con comision: ${CLP(gan_consorcio_an)}</p>
-      <p>Ganancia mensual con comision: ${CLP(gan_consorcio_mes)}</p>
-      <hr>
-      <p>Ganancia anual sin comision: ${CLP(gan_consorcio_an_n)}</p>
-      <p>Ganancia mensual sin comision: ${CLP(gan_consorcio_mes_n)}</p>
-      <hr>
-      <p>Comisión anual aproximada ${CLP(com_consorcio * 12)}</p>
-      <p>Comision mensual aproximada ${CLP(com_consorcio)}</p>
-    `;
-
-    santander.innerHTML = `
-      <h2>Santander (Más Lucas)</h2>
-      <p>Ganancia anual bruta: ${CLP(gan_santander_an)}</p>
-      <p>Ganancia mensual bruta: ${CLP(gan_santander_mes)}</p>
-    `;
-
-    mercadoPago.innerHTML = `
-      <h2>Mercado Pago</h2>
-      <p>Ganancia anual bruta: ${CLP(gan_mercadoPago_an)}</p>
-      <p>Ganancia mensual bruta: ${CLP(gan_mercadoPago_mes)}</p>
-    `;
-
-    tenpo.innerHTML = `
-      <h2>Tenpo (Cuenta Remunerada)</h2>
-      <p>Ganancia anual bruta: ${CLP(gan_tenpo_an)}</p>
-      <p>Ganancia mensual bruta: ${CLP(gan_tenpo_mes)}</p>
-    `;
-    aproximado.innerHTML = `<p>*Los cálculos son aproximados y pueden variar según las condiciones de cada banco.</p>`;
-
-    document.querySelectorAll(".calculo").forEach((div) => {
-      div.style.display = "inline-block";
+function formatoCLP(n) {
+  try {
+    return Number(n).toLocaleString("es-CL", {
+      style: "currency",
+      currency: "CLP",
+      maximumFractionDigits: 0
     });
+  } catch {
+    return Math.round(Number(n) || 0).toString();
+  }
+}
+function setTexto(sel, val) { const el = document.querySelector(sel); if (el) el.textContent = val; }
+function pintaTasa(selector, rDecimal, etiqueta = "") {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  const pct = (rDecimal * 100).toFixed(4).replace(/\.?0+$/, ""); // 0.0525 -> "5.25"
+  el.textContent = etiqueta ? `${pct}% ${etiqueta}` : `${pct}%`;
+}
+function debounce(fn, ms = 250) {
+  let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(null, args), ms); };
+}
 
-    const main = document.querySelector("main");
-    main.style.marginTop = "0";
+// --- Estado global (tasas en DECIMAL, listas para operar) ---
+window.TASAS = {
+  consorcio: { anual: 0, mensual: 0 },
+  santander: { anual: 0, mensual: 0 },
+  tenpo:     { diaria: 0, mensual: 0, anual: 0 }
+};
+
+// --- Carga de tasas desde data/latest.json ---
+async function cargarTasas() {
+  const url = `${DATA_URL}?ts=${Date.now()}`; // cache-busting
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    dlog("[latest.json]", json);
+
+    if (!json || !Array.isArray(json.datos)) throw new Error("JSON inválido: falta 'datos[]'.");
+
+    const mapa = Object.fromEntries(json.datos.map(d => [d.id, d.valor])); // valores en %
+    dlog("[mapa ids→%]", mapa);
+
+    // 1) Pasar a decimal
+    const consorcioAnualDec = pctAdecimal(mapa[IDS.consorcioAnual]); // 5.25 -> 0.0525
+    const santanderAnualDec = pctAdecimal(mapa[IDS.santanderAnual]); // 1.92 -> 0.0192
+    const tenpoDiariaDec    = pctAdecimal(mapa[IDS.tenpoDiaria]);    // 0.0167 -> 0.000167
+
+    // 2) Derivados útiles
+    const consorcioMensualDec = anualA_mensual(consorcioAnualDec);
+    const santanderMensualDec = anualA_mensual(santanderAnualDec);
+    const tenpoMensualDec     = diariaA_mensual(tenpoDiariaDec, 30);
+    const tenpoAnualDec       = diariaA_anual(tenpoDiariaDec, 365);
+
+    // 3) Guardar en estado global
+    window.TASAS = {
+      consorcio: { anual: consorcioAnualDec, mensual: consorcioMensualDec },
+      santander: { anual: santanderAnualDec, mensual: santanderMensualDec },
+      tenpo:     { diaria: tenpoDiariaDec, mensual: tenpoMensualDec, anual: tenpoAnualDec }
+    };
+    dlog("[TASAS decimales]", window.TASAS);
+
+    // 4) Pintar en UI si existen esos nodos
+    pintaTasa("#tasa-consorcio-anual", consorcioAnualDec, "anual");
+    pintaTasa("#tasa-consorcio-mensual", consorcioMensualDec, "mensual");
+    pintaTasa("#tasa-santander-anual", santanderAnualDec, "anual");
+    pintaTasa("#tasa-santander-mensual", santanderMensualDec, "mensual");
+    pintaTasa("#tasa-tenpo-diaria", tenpoDiariaDec, "diaria");
+    pintaTasa("#tasa-tenpo-mensual", tenpoMensualDec, "mensual");
+
+    const $fecha = document.querySelector("#ultima-actualizacion");
+    if ($fecha) $fecha.textContent = new Date(json.fecha).toLocaleString("es-CL");
+
+  } catch (err) {
+    console.error("No se pudo cargar data/latest.json:", err);
+    // Fallback opcional: puedes setear valores por defecto aquí si quieres
+  }
+}
+
+// --- Cálculo de ganancia ---
+function calcularGanancia({ compuesto = true } = {}) {
+  const capital = Number(document.querySelector("#monto")?.value || 0);
+  const meses   = Number(document.querySelector("#meses")?.value || 1);
+  const banco   = document.querySelector("#producto")?.value || "tenpo";
+
+  if (!(capital > 0) || !(meses > 0)) {
+    setTexto("#resultado-monto-final", "");
+    setTexto("#resultado-interes", "");
+    setTexto("#resultado-tasa-mensual", "");
+    return { final: 0, interes: 0 };
   }
 
-  // Click en el botón
-  btn.addEventListener("click", calcular);
+  const rMensual = window.TASAS?.[banco]?.mensual ?? 0;
+  if (!(rMensual > 0)) {
+    setTexto("#resultado-monto-final", "—");
+    setTexto("#resultado-interes", "—");
+    setTexto("#resultado-tasa-mensual", "—");
+    return { final: 0, interes: 0 };
+  }
 
-  // Enter o Espacio dentro del formulario, ejecuta calcular()
-  form.addEventListener("keydown", (e) => {
-    const isEnter = e.key === "Enter";
-    const isSpace = e.key === " " || e.code === "Space" || e.key === "Spacebar";
+  const final = compuesto
+    ? capital * Math.pow(1 + rMensual, meses)   // Interés compuesto
+    : capital * (1 + rMensual * meses);         // Interés simple
 
-    if (isEnter || isSpace) {
-      e.preventDefault(); // evita submit o scroll
+  const interes = final - capital;
 
-      // Ejecuta la función calcular
-      calcular(e);
+  setTexto("#resultado-monto-final", formatoCLP(final));
+  setTexto("#resultado-interes",     formatoCLP(interes));
+  setTexto("#resultado-tasa-mensual", `${(rMensual * 100).toFixed(4).replace(/\.?0+$/, "")}%`);
 
-      // Simula el clic con efecto
-      btn.classList.add("activo");
-      btn.click();
+  return { final, interes };
+}
 
-      setTimeout(() => {
-        btn.classList.remove("activo");
-      }, 200);
-    }
+// --- Inicialización / eventos ---
+document.addEventListener("DOMContentLoaded", async () => {
+  await cargarTasas();
+
+  const recalcular = debounce(() => calcularGanancia({ compuesto: true }), 200);
+
+  document.querySelector("#calcular")?.addEventListener("click", () => {
+    calcularGanancia({ compuesto: true });
   });
+
+  ["#monto", "#meses", "#producto"].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) el.addEventListener("input", recalcular);
+    if (el) el.addEventListener("change", recalcular);
+  });
+
+  // Calcula una vez al cargar
+  calcularGanancia({ compuesto: true });
 });
+
+
