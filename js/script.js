@@ -1,159 +1,175 @@
-// ===============================
-// script.js - Calculadora Bancos
-// ===============================
-
-// --- Config: IDs que vienen del scraper (data/latest.json) ---
-const IDS = {
-  consorcioAnual: "tasa_consorcio_anual",   // % anual
-  santanderAnual: "tasa_santander_anual",   // % anual
-  tenpoDiaria: "tasa_tenpo_diaria"          // % diaria
-};
-
-// --- Ruta al JSON (ajusta si tu build cambia la carpeta) ---
 const DATA_URL = "data/latest.json";
 
-// --- Debug opcional: se activa en localhost ---
-const DEBUG = location.hostname === "localhost";
-const dlog = (...a) => { if (DEBUG) console.log(...a); };
-
-// --- Utilidades numéricas ---
-const pctAdecimal     = (p) => (p ?? 0) / 100;                 // 5.25 -> 0.0525
-const diariaA_mensual = (rDia, dias = 30)  => Math.pow(1 + rDia, dias) - 1;
-const diariaA_anual   = (rDia, dias = 365) => Math.pow(1 + rDia, dias) - 1;
-const anualA_mensual  = (rAnual)           => Math.pow(1 + rAnual, 1 / 12) - 1;
-const mensualA_anual  = (rMensual)         => Math.pow(1 + rMensual, 12) - 1;
-
-function formatoCLP(n) {
-  try {
-    return Number(n).toLocaleString("es-CL", {
-      style: "currency",
-      currency: "CLP",
-      maximumFractionDigits: 0
-    });
-  } catch {
-    return Math.round(Number(n) || 0).toString();
-  }
-}
-function setTexto(sel, val) { const el = document.querySelector(sel); if (el) el.textContent = val; }
-function pintaTasa(selector, rDecimal, etiqueta = "") {
-  const el = document.querySelector(selector);
-  if (!el) return;
-  const pct = (rDecimal * 100).toFixed(4).replace(/\.?0+$/, ""); // 0.0525 -> "5.25"
-  el.textContent = etiqueta ? `${pct}% ${etiqueta}` : `${pct}%`;
-}
-function debounce(fn, ms = 250) {
-  let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(null, args), ms); };
-}
-
-// --- Estado global (tasas en DECIMAL, listas para operar) ---
-window.TASAS = {
-  consorcio: { anual: 0, mensual: 0 },
-  santander: { anual: 0, mensual: 0 },
-  tenpo:     { diaria: 0, mensual: 0, anual: 0 }
+const IDS = {
+  consorcioAnual: "tasa_consorcio_anual",
+  santanderAnual: "tasa_santander_anual",
+  tenpoDiaria: "tasa_tenpo_diaria"
 };
 
-// --- Carga de tasas desde data/latest.json ---
-async function cargarTasas() {
-  const url = `${DATA_URL}?ts=${Date.now()}`; // cache-busting
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    dlog("[latest.json]", json);
+const state = {
+  tasas: null
+};
 
-    if (!json || !Array.isArray(json.datos)) throw new Error("JSON inválido: falta 'datos[]'.");
+function clp(value) {
+  return Number(value || 0).toLocaleString("es-CL", {
+    style: "currency",
+    currency: "CLP",
+    maximumFractionDigits: 0
+  });
+}
 
-    const mapa = Object.fromEntries(json.datos.map(d => [d.id, d.valor])); // valores en %
-    dlog("[mapa ids→%]", mapa);
+function percent(value) {
+  return `${(value * 100).toFixed(2).replace(/\.00$/, "")}%`;
+}
 
-    // 1) Pasar a decimal
-    const consorcioAnualDec = pctAdecimal(mapa[IDS.consorcioAnual]); // 5.25 -> 0.0525
-    const santanderAnualDec = pctAdecimal(mapa[IDS.santanderAnual]); // 1.92 -> 0.0192
-    const tenpoDiariaDec    = pctAdecimal(mapa[IDS.tenpoDiaria]);    // 0.0167 -> 0.000167
+function annualToMonthly(rate) {
+  return Math.pow(1 + rate, 1 / 12) - 1;
+}
 
-    // 2) Derivados útiles
-    const consorcioMensualDec = anualA_mensual(consorcioAnualDec);
-    const santanderMensualDec = anualA_mensual(santanderAnualDec);
-    const tenpoMensualDec     = diariaA_mensual(tenpoDiariaDec, 30);
-    const tenpoAnualDec       = diariaA_anual(tenpoDiariaDec, 365);
+function dailyToMonthly(rate, days = 30) {
+  return Math.pow(1 + rate, days) - 1;
+}
 
-    // 3) Guardar en estado global
-    window.TASAS = {
-      consorcio: { anual: consorcioAnualDec, mensual: consorcioMensualDec },
-      santander: { anual: santanderAnualDec, mensual: santanderMensualDec },
-      tenpo:     { diaria: tenpoDiariaDec, mensual: tenpoMensualDec, anual: tenpoAnualDec }
-    };
-    dlog("[TASAS decimales]", window.TASAS);
+function dailyToAnnual(rate, days = 365) {
+  return Math.pow(1 + rate, days) - 1;
+}
 
-    // 4) Pintar en UI si existen esos nodos
-    pintaTasa("#tasa-consorcio-anual", consorcioAnualDec, "anual");
-    pintaTasa("#tasa-consorcio-mensual", consorcioMensualDec, "mensual");
-    pintaTasa("#tasa-santander-anual", santanderAnualDec, "anual");
-    pintaTasa("#tasa-santander-mensual", santanderMensualDec, "mensual");
-    pintaTasa("#tasa-tenpo-diaria", tenpoDiariaDec, "diaria");
-    pintaTasa("#tasa-tenpo-mensual", tenpoMensualDec, "mensual");
+function renderCard(targetId, title, annualRate, monthlyRate, capital, sourceUrl) {
+  const node = document.getElementById(targetId);
+  if (!node) return;
 
-    const $fecha = document.querySelector("#ultima-actualizacion");
-    if ($fecha) $fecha.textContent = new Date(json.fecha).toLocaleString("es-CL");
+  const annualGain = capital * annualRate;
+  const monthlyGain = capital * monthlyRate;
 
-  } catch (err) {
-    console.error("No se pudo cargar data/latest.json:", err);
-    // Fallback opcional: puedes setear valores por defecto aquí si quieres
+  node.innerHTML = `
+    <h2>${title}</h2>
+    <p>Tasa anual estimada: ${percent(annualRate)}</p>
+    <p>Tasa mensual estimada: ${percent(monthlyRate)}</p>
+    <p>Ganancia anual estimada: ${clp(annualGain)}</p>
+    <p>Ganancia mensual estimada: ${clp(monthlyGain)}</p>
+    <p><a href="${sourceUrl}" target="_blank" rel="noreferrer">Ver fuente</a></p>
+  `;
+  node.style.display = "inline-block";
+}
+
+function renderUnavailableCard() {
+  const node = document.getElementById("mercadoPago");
+  if (!node) return;
+
+  node.innerHTML = `
+    <h2>Mercado Pago</h2>
+    <p>Sin tasa automática disponible en esta versión.</p>
+    <p>La calculadora se está alimentando solo con las instituciones presentes en <code>data/latest.json</code>.</p>
+  `;
+  node.style.display = "inline-block";
+}
+
+async function loadRates() {
+  const response = await fetch(`${DATA_URL}?ts=${Date.now()}`);
+  if (!response.ok) {
+    throw new Error(`No se pudo cargar ${DATA_URL}: HTTP ${response.status}`);
+  }
+
+  const json = await response.json();
+  const values = Object.fromEntries((json.datos || []).map((item) => [item.id, item]));
+
+  const consorcioAnnual = (values[IDS.consorcioAnual]?.valor || 0) / 100;
+  const santanderAnnual = (values[IDS.santanderAnual]?.valor || 0) / 100;
+  const tenpoDaily = (values[IDS.tenpoDiaria]?.valor || 0) / 100;
+
+  state.tasas = {
+    fecha: json.fecha,
+    consorcio: {
+      annual: consorcioAnnual,
+      monthly: annualToMonthly(consorcioAnnual),
+      source: values[IDS.consorcioAnual]?.fuente || "#"
+    },
+    santander: {
+      annual: santanderAnnual,
+      monthly: annualToMonthly(santanderAnnual),
+      source: values[IDS.santanderAnual]?.fuente || "#"
+    },
+    tenpo: {
+      annual: dailyToAnnual(tenpoDaily),
+      monthly: dailyToMonthly(tenpoDaily),
+      source: values[IDS.tenpoDiaria]?.fuente || "#"
+    }
+  };
+}
+
+function updateTimestamp() {
+  const node = document.getElementById("ultima-actualizacion");
+  if (!node || !state.tasas?.fecha) return;
+
+  node.textContent = `Última actualización de datos: ${new Date(state.tasas.fecha).toLocaleString("es-CL")}`;
+}
+
+function readCapital() {
+  const raw = document.getElementById("monto_raw")?.value || "";
+  return Number(raw || 0);
+}
+
+function renderResults() {
+  const capital = readCapital();
+  const note = document.getElementById("aproximado");
+
+  if (!(capital > 0) || !state.tasas) {
+    if (note) note.textContent = "";
+    return;
+  }
+
+  renderCard("consorcio", "Consorcio", state.tasas.consorcio.annual, state.tasas.consorcio.monthly, capital, state.tasas.consorcio.source);
+  renderCard("santander", "Santander", state.tasas.santander.annual, state.tasas.santander.monthly, capital, state.tasas.santander.source);
+  renderCard("tenpo", "Tenpo", state.tasas.tenpo.annual, state.tasas.tenpo.monthly, capital, state.tasas.tenpo.source);
+  renderUnavailableCard();
+
+  if (note) {
+    note.textContent = "Los cálculos son estimados y pueden variar según condiciones, topes y cambios de cada institución.";
   }
 }
 
-// --- Cálculo de ganancia ---
-function calcularGanancia({ compuesto = true } = {}) {
-  const capital = Number(document.querySelector("#monto")?.value || 0);
-  const meses   = Number(document.querySelector("#meses")?.value || 1);
-  const banco   = document.querySelector("#producto")?.value || "tenpo";
+function formatInput() {
+  const input = document.getElementById("monto");
+  const raw = document.getElementById("monto_raw");
+  if (!input || !raw) return;
 
-  if (!(capital > 0) || !(meses > 0)) {
-    setTexto("#resultado-monto-final", "");
-    setTexto("#resultado-interes", "");
-    setTexto("#resultado-tasa-mensual", "");
-    return { final: 0, interes: 0 };
-  }
-
-  const rMensual = window.TASAS?.[banco]?.mensual ?? 0;
-  if (!(rMensual > 0)) {
-    setTexto("#resultado-monto-final", "—");
-    setTexto("#resultado-interes", "—");
-    setTexto("#resultado-tasa-mensual", "—");
-    return { final: 0, interes: 0 };
-  }
-
-  const final = compuesto
-    ? capital * Math.pow(1 + rMensual, meses)   // Interés compuesto
-    : capital * (1 + rMensual * meses);         // Interés simple
-
-  const interes = final - capital;
-
-  setTexto("#resultado-monto-final", formatoCLP(final));
-  setTexto("#resultado-interes",     formatoCLP(interes));
-  setTexto("#resultado-tasa-mensual", `${(rMensual * 100).toFixed(4).replace(/\.?0+$/, "")}%`);
-
-  return { final, interes };
+  const digits = input.value.replace(/\D/g, "");
+  raw.value = digits;
+  input.value = digits ? Number(digits).toLocaleString("es-CL") : "";
 }
 
-// --- Inicialización / eventos ---
 document.addEventListener("DOMContentLoaded", async () => {
-  await cargarTasas();
+  const form = document.getElementById("calculator-form");
+  const input = document.getElementById("monto");
+  const button = document.getElementById("calcular");
 
-  const recalcular = debounce(() => calcularGanancia({ compuesto: true }), 200);
+  form?.addEventListener("submit", (event) => event.preventDefault());
 
-  document.querySelector("#calcular")?.addEventListener("click", () => {
-    calcularGanancia({ compuesto: true });
+  input?.addEventListener("input", formatInput);
+
+  button?.addEventListener("click", () => {
+    if (!readCapital()) {
+      input?.reportValidity();
+      return;
+    }
+    renderResults();
   });
 
-  ["#monto", "#meses", "#producto"].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (el) el.addEventListener("input", recalcular);
-    if (el) el.addEventListener("change", recalcular);
+  form?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      button?.click();
+    }
   });
 
-  // Calcula una vez al cargar
-  calcularGanancia({ compuesto: true });
+  try {
+    await loadRates();
+    updateTimestamp();
+  } catch (error) {
+    const note = document.getElementById("aproximado");
+    if (note) {
+      note.textContent = "No se pudieron cargar las tasas automáticas.";
+    }
+    console.error(error);
+  }
 });
-
-

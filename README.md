@@ -1,27 +1,34 @@
-## Link Directo
-- https://sebastianarb.github.io/GananciasBancosChile/
+# Link Directo
 
-# Calculadora de Ganancias Bancarias 💰
+- https://sebastianarb.github.io/calculadora-gananciabancos-v2/
 
-Esta es una calculadora web que permite estimar y comparar las **ganancias anuales y mensuales** de distintas cuentas bancarias en Chile, considerando tanto **tasas de interés** como **comisiones**.
+# Calculadora de Ganancias Bancarias
 
-##  Características
-- Comparación entre **Consorcio**, **Santander**, **Mercado Pago** y **Tenpo**.
-- Cálculo automático de ganancias **brutas** y **netas**.
-- Soporte para uso con **teclado** (Enter o barra espaciadora).
-- Resultados ocultos hasta que se realiza el cálculo.
+Esta calculadora web permite estimar ganancias mensuales y anuales de cuentas remuneradas en Chile usando los datos más recientes disponibles en `data/latest.json`.
 
-##  Tecnologías utilizadas
-- **HTML5**  
-- **CSS3**  
-- **JavaScript (ES6)**
+## Características
 
-##  Uso
+- Cálculo automático para Consorcio, Santander y Tenpo.
+- Carga dinámica de tasas desde los datos generados por el scraper.
+- Formato de montos en pesos chilenos.
+- Soporte para teclado con `Enter`.
+- Publicación en GitHub Pages.
+
+## Tecnologías utilizadas
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- GitHub Actions para actualización mensual de datos
+
+## Uso
+
 1. Ingresa el monto a invertir en pesos chilenos.
-2. Presiona **Calcular**, **Enter** o **barra espaciadora**.
-3. Observa las ganancias brutas y netas de cada institución.
+2. Presiona `Calcular` o `Enter`.
+3. Revisa la estimación mensual y anual por institución.
 
-##  Instalación
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/usuario/calculadora-bancos.git
+## Instalación
+
+```bash
+git clone https://github.com/SebastianARB/calculadora-gananciabancos-v2.git
+```
