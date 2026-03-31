@@ -116,6 +116,34 @@
         "url": "https://banco.santander.cl/uploads/000/049/610/6ab545cd-7515-4096-9304-11e18b5a58d0/original/Tarifado_Mas_Lucas.pdf",
         "detalle": "0,16% mensual (1,92% anual)"
       }
+    },
+    {
+      "id": "banco-de-chile-fan-ahorro",
+      "nombre": "Banco de Chile - Cuenta FAN Ahorro",
+      "institucion": "Banco de Chile",
+      "tipoCuenta": "Cuenta de ahorro digital",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 0.15,
+        "periodo": "monthly",
+        "unidad": "percent",
+        "anualEquivalente": 1.8135585566074946,
+        "textoFuente": "Genera un interes mensual del 0,15% de tu saldo*"
+      },
+      "minSaldo": 0,
+      "abono": "mensual",
+      "liquidez": "Disponible",
+      "costoMantencion": "$0",
+      "notas": [
+        "La pieza oficial publica indica un interes mensual de 0,15% del saldo.",
+        "La tasa informada esta sujeta a TPM segun la comunicacion oficial del producto."
+      ],
+      "fuente": {
+        "titulo": "Nueva Cuenta FAN Ahorro Banco de Chile",
+        "url": "https://sitiospublicos.bancochile.cl/personas/fan-ahorro",
+        "detalle": "Genera un interes mensual del 0,15% de tu saldo*"
+      }
     }
   ],
   "observados": [
@@ -133,19 +161,6 @@
         {
           "titulo": "Cuenta Mercado Pago",
           "url": "https://www.mercadopago.cl/cuenta"
-        }
-      ]
-    },
-    {
-      "id": "banco-de-chile-fan-ahorro",
-      "nombre": "Banco de Chile - Cuenta FAN Ahorro",
-      "institucion": "Banco de Chile",
-      "estado": "sin_tasa_publica",
-      "detalle": "Banco de Chile confirma publicamente que FAN Ahorro entrega intereses mensuales, pero en la nota oficial indica que la tasa se publicara oportunamente en su sitio. No encontre una tasa publica vigente y estable para automatizar la comparacion sin adivinar.",
-      "fuentes": [
-        {
-          "titulo": "Banco de Chile lanza Cuenta FAN Ahorro",
-          "url": "https://sitiospublicos.bancochile.cl/nuestro-banco/es/prensa/noticias/detalle/cuenta-fan-ahorro"
         }
       ]
     }

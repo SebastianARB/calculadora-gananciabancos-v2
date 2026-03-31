@@ -120,6 +120,22 @@ function buildProduct(source, value, rawText) {
   };
 }
 
+function buildObservedFromFailure(source, errorMessage) {
+  return {
+    id: source.id,
+    nombre: source.nombre,
+    institucion: source.institucion,
+    estado: "revision_manual",
+    detalle: `No fue posible validar automaticamente este producto en la ultima corrida. Motivo: ${errorMessage}`,
+    fuentes: [
+      {
+        titulo: source.sourceTitle || source.nombre,
+        url: source.url
+      }
+    ]
+  };
+}
+
 async function scrapeProduct(page, source, attempt = 1) {
   const maxAttempts = 3;
 
@@ -211,9 +227,15 @@ async function main() {
   );
 
   const products = [];
+  const scrapeFailures = [];
   for (const source of config.productos) {
-    const product = await scrapeProduct(page, source);
-    products.push(product);
+    try {
+      const product = await scrapeProduct(page, source);
+      products.push(product);
+    } catch (error) {
+      console.warn(`Se omite ${source.id} tras fallar la validacion automatica.`);
+      scrapeFailures.push(buildObservedFromFailure(source, error.message));
+    }
   }
 
   await browser.close();
@@ -234,7 +256,7 @@ async function main() {
       ranking: "La comparacion usa rentabilidad bruta publica anual equivalente y no descuenta condiciones personalizadas ni comisiones variables."
     },
     productos: products,
-    observados: config.observados || []
+    observados: [...(config.observados || []), ...scrapeFailures]
   };
 
   if (!fs.existsSync(DATA_DIR)) {

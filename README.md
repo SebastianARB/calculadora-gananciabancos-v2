@@ -12,11 +12,11 @@ Comparador web para estimar que cuenta remunerada o cuenta digital conviene mas 
 - Consorcio - Cuenta Mas Digital
 - Tenpo - Cuenta Remunerada
 - Santander - Cuenta Vista Mas Lucas
+- Banco de Chile - Cuenta FAN Ahorro
 
 ## Productos observados fuera del ranking automatico
 
 - Mercado Pago
-- Banco de Chile - Cuenta FAN Ahorro
 
 Estos productos aparecen informados en el sitio, pero sin un numero publico fijo y estable que permita compararlos automaticamente de forma honesta.
 
@@ -26,6 +26,7 @@ Estos productos aparecen informados en el sitio, pero sin un numero publico fijo
 - La interfaz ordena las cuentas por rentabilidad publica anual equivalente.
 - Si una cuenta exige saldo minimo, se marca como no elegible para montos menores.
 - Las notas de cada tarjeta explican restricciones, formas de abono y alertas importantes.
+- Si una fuente publica se bloquea o falla temporalmente, el scraper la mueve a observados para no romper toda la actualizacion mensual.
 
 ## Actualizacion automatica
 
