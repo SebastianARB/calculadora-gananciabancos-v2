@@ -1,29 +1,115 @@
-[
-  {
-    "id": "tasa_consorcio_anual",
-    "url": "https://sitio.consorcio.cl/banca-personas/cuenta-vista",
-    "selector": ".cns-complement__tax",
-    "parse": "number_percent",
-    "notes": "Texto tipo 5,25%"
-  },
-
-  {
-    "id": "tasa_santander_anual",
-    "url": "https://banco.santander.cl/personas/planes/cuenta-mas-lucas",
-    "selector": ".content p",
-    "parse": "regex_percent",
-    "regex": "(\\d+[\\.,]\\d+%)\\s*anual",
-    "searchAll": true,
-    "notes": "Buscar cualquier párrafo que contenga '% anual'"
-  },
-  {
-    "id": "tasa_tenpo_diaria",
-    "url": "https://www.tenpo.cl/productos/cuenta-remunerada",
-    "selector": ".cf-faq-content",
-    "parse": "regex_percent",
-    "regex": "(\\d+[\\.,]?\\d*%)",
-    "searchAll": true,
-    "preClickAll": ".cf-faq-title",
-    "notes": "Abre FAQs y busca el porcentaje en todos los párrafos"
-  }
-]
+{
+  "productos": [
+    {
+      "id": "copec-pay",
+      "nombre": "Copec Pay - Mis Ganancias",
+      "institucion": "Copec Pay",
+      "tipoCuenta": "Cuenta digital",
+      "url": "https://copecpay.cl/servicios/mis-ganancias/",
+      "selector": "[data-label='Rentabilidad anual']",
+      "parse": "number_percent",
+      "ratePeriod": "annual",
+      "minBalance": 40000,
+      "payout": "diario",
+      "availability": "Inmediata 24/7",
+      "maintenance": "$0",
+      "sourceTitle": "Landing Mis Ganancias Copec Pay",
+      "notes": [
+        "La landing publica anuncia 6% anual y abonos diarios desde $40.000.",
+        "Los terminos del beneficio indican que el porcentaje puede depender de tramos de saldo informados en la app."
+      ]
+    },
+    {
+      "id": "consorcio",
+      "nombre": "Consorcio - Cuenta Mas Digital",
+      "institucion": "Consorcio",
+      "tipoCuenta": "Cuenta vista",
+      "url": "https://sitio.consorcio.cl/banca-personas/cuenta-vista",
+      "selector": ".cns-complement__tax",
+      "parse": "number_percent",
+      "ratePeriod": "annual",
+      "minBalance": 0,
+      "payout": "mensual",
+      "availability": "Disponible",
+      "maintenance": "0,075 UF + IVA / mes (con posibles exenciones)",
+      "sourceTitle": "Cuenta Mas Digital Consorcio",
+      "notes": [
+        "La tasa publicada se calcula en base a TPM + 0,5%.",
+        "La comparacion no descuenta la mantencion mensual expresada en UF."
+      ]
+    },
+    {
+      "id": "tenpo",
+      "nombre": "Tenpo - Cuenta Remunerada",
+      "institucion": "Tenpo",
+      "tipoCuenta": "Cuenta remunerada",
+      "url": "https://www.tenpo.cl/productos/cuenta-remunerada",
+      "parse": "regex_percent",
+      "regex": "(\\d+[\\.,]\\d+%)\\s*Tasa anual",
+      "readBody": true,
+      "ratePeriod": "annual",
+      "minBalance": 50000,
+      "payout": "diario",
+      "availability": "Disponible",
+      "maintenance": "$0",
+      "sourceTitle": "Cuenta Remunerada Tenpo",
+      "notes": [
+        "La pagina publica tambien informa una tasa diaria aproximada de 0.011961%.",
+        "Las ganancias se abonan al dia siguiente, incluyendo fines de semana y feriados."
+      ]
+    },
+    {
+      "id": "santander",
+      "nombre": "Santander - Cuenta Vista Mas Lucas",
+      "institucion": "Santander",
+      "tipoCuenta": "Cuenta vista",
+      "url": "https://banco.santander.cl/personas/planes/cuenta-mas-lucas",
+      "selector": ".content p",
+      "parse": "regex_percent",
+      "regex": "(\\d+[\\.,]\\d+%)\\s*anual",
+      "searchAll": true,
+      "ratePeriod": "annual",
+      "minBalance": 0,
+      "payout": "mensual",
+      "availability": "Disponible",
+      "maintenance": "UF 0",
+      "sourceTitle": "Cuenta Mas Lucas Santander",
+      "notes": [
+        "El tarifario oficial publico muestra 0,16% mensual equivalente a 1,92% anual.",
+        "La captura desde la landing puede ser mas fragil que el PDF tarifario oficial."
+      ]
+    }
+  ],
+  "observados": [
+    {
+      "id": "mercado-pago",
+      "nombre": "Mercado Pago",
+      "institucion": "Mercado Pago",
+      "estado": "sin_tasa_publica",
+      "detalle": "Mercado Pago confirma en su ayuda oficial que la rentabilidad se consulta dentro de la app en 'Tu inversion en BICE' y que la tasa anual mostrada es una estimacion de los ultimos 30 dias. No expone un numero publico fijo y estable en la web para compararlo automaticamente.",
+      "fuentes": [
+        {
+          "titulo": "Ayuda Mercado Pago - rentabilidad del dinero",
+          "url": "https://www.mercadopago.cl/ayuda/rentabilidad-dinero-invertido_32500"
+        },
+        {
+          "titulo": "Cuenta Mercado Pago",
+          "url": "https://www.mercadopago.cl/cuenta"
+        }
+      ]
+    },
+    {
+      "id": "banco-de-chile-fan-ahorro",
+      "nombre": "Banco de Chile - Cuenta FAN Ahorro",
+      "institucion": "Banco de Chile",
+      "estado": "sin_tasa_publica",
+      "detalle": "Banco de Chile confirma publicamente que FAN Ahorro entrega intereses mensuales, pero en la nota oficial indica que la tasa se publicara oportunamente en su sitio. No encontre una tasa publica vigente y estable para automatizar la comparacion sin adivinar.",
+      "fuentes": [
+        {
+          "titulo": "Banco de Chile lanza Cuenta FAN Ahorro",
+          "url": "https://sitiospublicos.bancochile.cl/nuestro-banco/es/prensa/noticias/detalle/cuenta-fan-ahorro"
+        }
+      ]
+    }
+  ]
+}

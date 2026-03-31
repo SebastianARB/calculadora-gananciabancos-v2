@@ -1,24 +1,153 @@
 {
-  "fecha": "2026-03-01T08:32:39-03:00",
+  "fecha": "2026-03-31T00:55:00-03:00",
   "mes": "2026-03",
-  "datos": [
+  "criterios": {
+    "ranking": "La comparacion usa rentabilidad bruta publica anual equivalente y no descuenta condiciones personalizadas ni comisiones variables."
+  },
+  "productos": [
     {
-      "id": "tasa_consorcio_anual",
-      "valor": 5,
-      "raw": "5,0%",
-      "fuente": "https://sitio.consorcio.cl/banca-personas/cuenta-vista"
+      "id": "copec-pay",
+      "nombre": "Copec Pay - Mis Ganancias",
+      "institucion": "Copec Pay",
+      "tipoCuenta": "Cuenta digital",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 6,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 6,
+        "textoFuente": "6% Anual*"
+      },
+      "minSaldo": 40000,
+      "abono": "diario",
+      "liquidez": "Inmediata 24/7",
+      "costoMantencion": "$0",
+      "notas": [
+        "La landing publica anuncia 6% anual y abonos diarios desde $40.000.",
+        "Los terminos del beneficio indican que el porcentaje puede depender de tramos de saldo informados en la app."
+      ],
+      "fuente": {
+        "titulo": "Landing Mis Ganancias Copec Pay",
+        "url": "https://copecpay.cl/servicios/mis-ganancias/",
+        "detalle": "6% Anual*"
+      }
     },
     {
-      "id": "tasa_santander_anual",
-      "valor": 1.92,
-      "raw": "Con la Cuenta Vista Más Lucas podrás ganar intereses mensualmente de acuerdo al saldo que mantengas en ella. Por ejemplo, si mantienes todos los días del mes un saldo de $500.000 ganarás $800 al mes (esto se calcula a una tasa de interés de 0,16% mensual, 1,92% anual). Este ejemplo es en base a un mes con 30 días.",
-      "fuente": "https://banco.santander.cl/personas/planes/cuenta-mas-lucas"
+      "id": "consorcio",
+      "nombre": "Consorcio - Cuenta Mas Digital",
+      "institucion": "Consorcio",
+      "tipoCuenta": "Cuenta vista",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 5,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 5,
+        "textoFuente": "5,0%"
+      },
+      "minSaldo": 0,
+      "abono": "mensual",
+      "liquidez": "Disponible",
+      "costoMantencion": "0,075 UF + IVA / mes (con posibles exenciones)",
+      "notas": [
+        "La tasa publicada se calcula en base a TPM + 0,5%.",
+        "La comparacion no descuenta la mantencion mensual expresada en UF."
+      ],
+      "fuente": {
+        "titulo": "Cuenta Mas Digital Consorcio",
+        "url": "https://sitio.consorcio.cl/banca-personas/cuenta-vista",
+        "detalle": "5,0%"
+      }
     },
     {
-      "id": "tasa_tenpo_diaria",
-      "valor": 0.011961,
-      "raw": "7. ¿Cómo se calcula la ganancia diaria?Se toma el promedio del saldo diario y se multiplica por una tasa diaria aproximada de 0.011961%, abonada al día siguiente en pesos chilenos.",
-      "fuente": "https://www.tenpo.cl/productos/cuenta-remunerada"
+      "id": "tenpo",
+      "nombre": "Tenpo - Cuenta Remunerada",
+      "institucion": "Tenpo",
+      "tipoCuenta": "Cuenta remunerada",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 4.4,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 4.4,
+        "textoFuente": "4,4% Tasa anual"
+      },
+      "minSaldo": 50000,
+      "abono": "diario",
+      "liquidez": "Disponible",
+      "costoMantencion": "$0",
+      "notas": [
+        "La pagina publica tambien informa una tasa diaria aproximada de 0.011961%.",
+        "Las ganancias se abonan al dia siguiente, incluyendo fines de semana y feriados."
+      ],
+      "fuente": {
+        "titulo": "Cuenta Remunerada Tenpo",
+        "url": "https://www.tenpo.cl/productos/cuenta-remunerada",
+        "detalle": "4,4% Tasa anual"
+      }
+    },
+    {
+      "id": "santander",
+      "nombre": "Santander - Cuenta Vista Mas Lucas",
+      "institucion": "Santander",
+      "tipoCuenta": "Cuenta vista",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 1.92,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 1.92,
+        "textoFuente": "0,16% mensual (1,92% anual)"
+      },
+      "minSaldo": 0,
+      "abono": "mensual",
+      "liquidez": "Disponible",
+      "costoMantencion": "UF 0",
+      "notas": [
+        "El tarifario oficial publico muestra 0,16% mensual equivalente a 1,92% anual.",
+        "La captura desde la landing puede ser mas fragil que el PDF tarifario oficial."
+      ],
+      "fuente": {
+        "titulo": "Cuenta Mas Lucas Santander",
+        "url": "https://banco.santander.cl/uploads/000/049/610/6ab545cd-7515-4096-9304-11e18b5a58d0/original/Tarifado_Mas_Lucas.pdf",
+        "detalle": "0,16% mensual (1,92% anual)"
+      }
+    }
+  ],
+  "observados": [
+    {
+      "id": "mercado-pago",
+      "nombre": "Mercado Pago",
+      "institucion": "Mercado Pago",
+      "estado": "sin_tasa_publica",
+      "detalle": "Mercado Pago confirma en su ayuda oficial que la rentabilidad se consulta dentro de la app en 'Tu inversion en BICE' y que la tasa anual mostrada es una estimacion de los ultimos 30 dias. No expone un numero publico fijo y estable en la web para compararlo automaticamente.",
+      "fuentes": [
+        {
+          "titulo": "Ayuda Mercado Pago - rentabilidad del dinero",
+          "url": "https://www.mercadopago.cl/ayuda/rentabilidad-dinero-invertido_32500"
+        },
+        {
+          "titulo": "Cuenta Mercado Pago",
+          "url": "https://www.mercadopago.cl/cuenta"
+        }
+      ]
+    },
+    {
+      "id": "banco-de-chile-fan-ahorro",
+      "nombre": "Banco de Chile - Cuenta FAN Ahorro",
+      "institucion": "Banco de Chile",
+      "estado": "sin_tasa_publica",
+      "detalle": "Banco de Chile confirma publicamente que FAN Ahorro entrega intereses mensuales, pero en la nota oficial indica que la tasa se publicara oportunamente en su sitio. No encontre una tasa publica vigente y estable para automatizar la comparacion sin adivinar.",
+      "fuentes": [
+        {
+          "titulo": "Banco de Chile lanza Cuenta FAN Ahorro",
+          "url": "https://sitiospublicos.bancochile.cl/nuestro-banco/es/prensa/noticias/detalle/cuenta-fan-ahorro"
+        }
+      ]
     }
   ]
 }

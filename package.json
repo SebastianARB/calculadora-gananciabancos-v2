@@ -1,4 +1,10 @@
 {
+  "name": "calculadora-gananciabancos-v2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrap": "node js/scrapear.js"
+  },
   "dependencies": {
     "dayjs": "^1.11.13",
     "puppeteer": "^24.16.0",

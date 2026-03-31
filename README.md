@@ -1,34 +1,39 @@
-# Link Directo
+# Comparador de Cuentas Remuneradas Chile
+
+Comparador web para estimar que cuenta remunerada o cuenta digital conviene mas segun un monto dado, usando solo informacion publica verificable.
+
+## Link directo
 
 - https://sebastianarb.github.io/calculadora-gananciabancos-v2/
 
-# Calculadora de Ganancias Bancarias
+## Que compara hoy
 
-Esta calculadora web permite estimar ganancias mensuales y anuales de cuentas remuneradas en Chile usando los datos más recientes disponibles en `data/latest.json`.
+- Copec Pay - Mis Ganancias
+- Consorcio - Cuenta Mas Digital
+- Tenpo - Cuenta Remunerada
+- Santander - Cuenta Vista Mas Lucas
 
-## Características
+## Productos observados fuera del ranking automatico
 
-- Cálculo automático para Consorcio, Santander y Tenpo.
-- Carga dinámica de tasas desde los datos generados por el scraper.
-- Formato de montos en pesos chilenos.
-- Soporte para teclado con `Enter`.
-- Publicación en GitHub Pages.
+- Mercado Pago
+- Banco de Chile - Cuenta FAN Ahorro
 
-## Tecnologías utilizadas
+Estos productos aparecen informados en el sitio, pero sin un numero publico fijo y estable que permita compararlos automaticamente de forma honesta.
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- GitHub Actions para actualización mensual de datos
+## Como funciona
 
-## Uso
+- El scraper genera `data/latest.json` y un snapshot mensual en `data/YYYY-MM.json`.
+- La interfaz ordena las cuentas por rentabilidad publica anual equivalente.
+- Si una cuenta exige saldo minimo, se marca como no elegible para montos menores.
+- Las notas de cada tarjeta explican restricciones, formas de abono y alertas importantes.
 
-1. Ingresa el monto a invertir en pesos chilenos.
-2. Presiona `Calcular` o `Enter`.
-3. Revisa la estimación mensual y anual por institución.
+## Actualizacion automatica
 
-## Instalación
+El workflow de GitHub Actions ejecuta el scraper una vez al mes y publica cambios en `data/*.json`.
+
+## Ejecutar el scraper
 
 ```bash
-git clone https://github.com/SebastianARB/calculadora-gananciabancos-v2.git
+npm install
+npm run scrap
 ```

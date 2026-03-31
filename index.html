@@ -3,35 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Ganancias</title>
+    <title>Comparador de cuentas remuneradas</title>
+    <meta name="description" content="Compara cuentas remuneradas y cuentas digitales en Chile con datos publicos verificados.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Calculadora de ganancias bancarias</h1>
-    </header>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero__copy">
+                <p class="eyebrow">Chile · cuentas remuneradas</p>
+                <h1>Descubre que cuenta te conviene mas hoy</h1>
+                <p class="hero__lead">
+                    Compara rentabilidad publica verificable, saldo minimo, forma de abono y notas clave
+                    de las cuentas que hoy exponen informacion util en sitios oficiales.
+                </p>
+            </div>
 
-    <main>
-        <form id="calculator-form">
-            <label for="monto">Cantidad a invertir:</label>
-            <input id="monto" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej: 500000" required>
-            <input id="monto_raw" name="monto" type="hidden">
-            <button id="calcular" type="button">Calcular</button>
-        </form>
+            <aside class="hero__panel">
+                <form id="calculator-form" class="control-card">
+                    <label for="monto" class="control-card__label">Monto a comparar</label>
+                    <div class="control-card__row">
+                        <input id="monto" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej: 500000" value="500.000" required>
+                        <input id="monto_raw" name="monto" type="hidden" value="500000">
+                        <button id="calcular" type="button">Comparar</button>
+                    </div>
+                    <p class="control-card__hint">
+                        El ranking usa rentabilidad bruta publica anual equivalente. No descuenta condiciones personalizadas ni comisiones variables.
+                    </p>
+                </form>
 
-        <p id="ultima-actualizacion"></p>
+                <dl class="hero__meta">
+                    <div>
+                        <dt>Ultima actualizacion</dt>
+                        <dd id="ultima-actualizacion">Cargando...</dd>
+                    </div>
+                    <div>
+                        <dt>Productos comparables</dt>
+                        <dd id="total-productos">-</dd>
+                    </div>
+                </dl>
+            </aside>
+        </header>
 
-        <div class="calculo" id="consorcio"></div>
-        <div class="calculo" id="santander"></div>
-        <div class="calculo" id="mercadoPago"></div>
-        <div class="calculo" id="tenpo"></div>
+        <main>
+            <section class="summary" aria-labelledby="resumen-title">
+                <div class="summary__winner" id="winner-card">
+                    <p class="summary__label">Mejor opcion para tu monto</p>
+                    <h2 id="winner-name">Cargando...</h2>
+                    <p id="winner-copy" class="summary__copy"></p>
+                </div>
+                <div class="summary__note" id="aproximado"></div>
+            </section>
 
-        <p id="aproximado"></p>
-    </main>
+            <section aria-labelledby="ranking-title" class="results-section">
+                <div class="section-heading">
+                    <p class="section-heading__kicker">Ranking</p>
+                    <h2 id="ranking-title">Comparacion principal</h2>
+                </div>
+                <div id="ranking-grid" class="ranking-grid"></div>
+            </section>
 
-    <footer>
-        <p>&copy; 2026 Sebastian Arbona</p>
-    </footer>
+            <section aria-labelledby="table-title" class="table-section">
+                <div class="section-heading">
+                    <p class="section-heading__kicker">Vista rapida</p>
+                    <h2 id="table-title">Tabla comparativa</h2>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cuenta</th>
+                                <th>Tasa anual</th>
+                                <th>Ganancia anual</th>
+                                <th>Ganancia mensual</th>
+                                <th>Saldo minimo</th>
+                                <th>Abono</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section aria-labelledby="observed-title" class="observed-section">
+                <div class="section-heading">
+                    <p class="section-heading__kicker">Observadas</p>
+                    <h2 id="observed-title">Productos detectados sin tasa publica automatizable</h2>
+                </div>
+                <div id="observed-grid" class="observed-grid"></div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>
+                Comparador construido con fuentes oficiales publicas. Cuando una institucion no publica una tasa estable en la web, se muestra fuera del ranking para evitar comparaciones engañosas.
+            </p>
+        </footer>
+    </div>
 
     <script src="js/script.js" defer></script>
 </body>
