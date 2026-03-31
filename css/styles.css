@@ -1,17 +1,17 @@
 :root {
-    --bg: #f6efe2;
-    --bg-strong: #f2d7ab;
-    --surface: rgba(255, 255, 255, 0.82);
-    --surface-strong: #fffaf1;
-    --ink: #17212b;
-    --muted: #5e6772;
-    --line: rgba(23, 33, 43, 0.1);
-    --accent: #c65c2d;
-    --accent-dark: #8e3410;
-    --accent-soft: rgba(198, 92, 45, 0.14);
-    --success: #13795b;
-    --warning: #9b6b12;
-    --shadow: 0 28px 70px rgba(56, 35, 14, 0.12);
+    --bg: #eef4ff;
+    --bg-strong: #d8e6ff;
+    --surface: rgba(255, 255, 255, 0.88);
+    --surface-strong: #ffffff;
+    --ink: #0f1d3a;
+    --muted: #5f6f8f;
+    --line: rgba(18, 48, 108, 0.11);
+    --accent: #2563eb;
+    --accent-dark: #143b8f;
+    --accent-soft: rgba(37, 99, 235, 0.12);
+    --success: #0f766e;
+    --warning: #9a6700;
+    --shadow: 0 24px 60px rgba(22, 53, 120, 0.12);
     --radius-xl: 28px;
     --radius-lg: 20px;
     --radius-md: 14px;
@@ -26,9 +26,9 @@ body {
     color: var(--ink);
     font-family: "Instrument Sans", sans-serif;
     background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 35%),
-        radial-gradient(circle at top right, rgba(198, 92, 45, 0.12), transparent 25%),
-        linear-gradient(180deg, #fbf4ea 0%, #f4eadc 100%);
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.96), transparent 32%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.14), transparent 24%),
+        linear-gradient(180deg, #f9fbff 0%, #eef4ff 52%, #e6efff 100%);
 }
 
 body::before {
@@ -37,10 +37,10 @@ body::before {
     inset: 0;
     pointer-events: none;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        linear-gradient(rgba(20, 59, 143, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 59, 143, 0.03) 1px, transparent 1px);
     background-size: 38px 38px;
-    opacity: 0.35;
+    opacity: 0.42;
 }
 
 .page-shell {
@@ -74,8 +74,8 @@ body::before {
     padding: 42px;
     border-radius: var(--radius-xl);
     background:
-        radial-gradient(circle at top right, rgba(198, 92, 45, 0.18), transparent 28%),
-        linear-gradient(145deg, rgba(255, 250, 241, 0.98), rgba(246, 233, 209, 0.92));
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 28%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(235, 243, 255, 0.94));
 }
 
 .eyebrow,
@@ -153,8 +153,8 @@ body::before {
 
 #monto:focus {
     outline: none;
-    border-color: rgba(198, 92, 45, 0.4);
-    box-shadow: 0 0 0 5px rgba(198, 92, 45, 0.12);
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.12);
 }
 
 #calcular {
@@ -164,10 +164,10 @@ body::before {
     color: white;
     font-size: 1rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    background: linear-gradient(135deg, #2d6df6, #143b8f);
     cursor: pointer;
     transition: transform 160ms ease, box-shadow 160ms ease;
-    box-shadow: 0 16px 30px rgba(142, 52, 16, 0.24);
+    box-shadow: 0 16px 30px rgba(20, 59, 143, 0.24);
 }
 
 #calcular:hover {
@@ -199,7 +199,7 @@ body::before {
 .hero__meta div {
     padding: 16px 18px;
     border-radius: var(--radius-lg);
-    background: rgba(255, 250, 241, 0.75);
+    background: rgba(247, 250, 255, 0.88);
     border: 1px solid var(--line);
 }
 
@@ -236,8 +236,8 @@ main {
 
 .summary__winner {
     background:
-        radial-gradient(circle at top right, rgba(19, 121, 91, 0.18), transparent 32%),
-        linear-gradient(145deg, rgba(240, 255, 246, 0.95), rgba(255, 255, 255, 0.82));
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.16), transparent 32%),
+        linear-gradient(145deg, rgba(245, 249, 255, 0.98), rgba(255, 255, 255, 0.9));
 }
 
 .summary__winner h2 {
@@ -253,7 +253,7 @@ main {
     display: flex;
     align-items: center;
     background:
-        linear-gradient(145deg, rgba(255, 249, 236, 0.96), rgba(255, 255, 255, 0.82));
+        linear-gradient(145deg, rgba(244, 248, 255, 0.96), rgba(255, 255, 255, 0.88));
 }
 
 .section-heading {
@@ -304,9 +304,9 @@ main {
 }
 
 .card--winner {
-    border-color: rgba(19, 121, 91, 0.28);
+    border-color: rgba(37, 99, 235, 0.24);
     background:
-        linear-gradient(145deg, rgba(244, 255, 247, 0.98), rgba(255, 255, 255, 0.9));
+        linear-gradient(145deg, rgba(242, 247, 255, 0.98), rgba(255, 255, 255, 0.92));
 }
 
 .card--ineligible {
@@ -329,7 +329,7 @@ main {
     border-radius: 999px;
     color: white;
     font-weight: 700;
-    background: var(--ink);
+    background: linear-gradient(135deg, #2d6df6, #143b8f);
 }
 
 .card__bank {
@@ -361,7 +361,7 @@ main {
 }
 
 .pill--good {
-    background: rgba(19, 121, 91, 0.12);
+    background: rgba(15, 118, 110, 0.12);
     color: var(--success);
 }
 
@@ -380,7 +380,7 @@ main {
 .metrics div {
     padding: 12px;
     border-radius: var(--radius-md);
-    background: rgba(255, 250, 241, 0.9);
+    background: rgba(245, 249, 255, 0.96);
 }
 
 .metrics dt {
