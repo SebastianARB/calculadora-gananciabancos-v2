@@ -9,7 +9,9 @@ Comparador web para estimar que cuenta remunerada o cuenta digital conviene mas 
 ## Que compara hoy
 
 - Copec Pay - Mis Ganancias
+- MACH Premium - Ahorro 24/7
 - Consorcio - Cuenta Mas Digital
+- MACH - Ahorro 24/7
 - Tenpo - Cuenta Remunerada
 - Santander - Cuenta Vista Mas Lucas
 - Banco de Chile - Cuenta FAN Ahorro

@@ -34,6 +34,34 @@
       }
     },
     {
+      "id": "mach-premium-ahorro-24-7",
+      "nombre": "MACH Premium - Ahorro 24/7",
+      "institucion": "MACHBANK",
+      "tipoCuenta": "Cuenta de ahorro digital",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 5.1,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 5.1,
+        "textoFuente": "5,1% de interes anual en Ahorro 24/7"
+      },
+      "minSaldo": 0,
+      "abono": "diario",
+      "liquidez": "Requiere plan Premium",
+      "costoMantencion": "$4.990 / mes",
+      "notas": [
+        "La pagina de MACH Premium publica 5,1% de interes anual en Ahorro 24/7.",
+        "El comparador muestra rentabilidad bruta y no descuenta el costo mensual del plan Premium."
+      ],
+      "fuente": {
+        "titulo": "MACH Premium",
+        "url": "https://www.machbank.cl/conoce-mach/cuenta-mach/mach-premium",
+        "detalle": "5,1% de interes anual en Ahorro 24/7"
+      }
+    },
+    {
       "id": "consorcio",
       "nombre": "Consorcio - Cuenta Mas Digital",
       "institucion": "Consorcio",
@@ -59,6 +87,34 @@
         "titulo": "Cuenta Mas Digital Consorcio",
         "url": "https://sitio.consorcio.cl/banca-personas/cuenta-vista",
         "detalle": "5,0%"
+      }
+    },
+    {
+      "id": "mach-ahorro-24-7",
+      "nombre": "MACH - Ahorro 24/7",
+      "institucion": "MACHBANK",
+      "tipoCuenta": "Cuenta de ahorro digital",
+      "estado": "verificado_publico",
+      "comparar": true,
+      "tasa": {
+        "valor": 4.6,
+        "periodo": "annual",
+        "unidad": "percent",
+        "anualEquivalente": 4.6,
+        "textoFuente": "4,6% de interes anual"
+      },
+      "minSaldo": 0,
+      "abono": "diario",
+      "liquidez": "Disponible",
+      "costoMantencion": "$0",
+      "notas": [
+        "La landing publica vigente muestra 4,6% de interes anual.",
+        "La comunicacion comercial indica que la plata crece todos los dias."
+      ],
+      "fuente": {
+        "titulo": "MACH Ahorro 24/7",
+        "url": "https://www.machbank.cl/productos/ahorro-e-inversion/ahorro-24-7",
+        "detalle": "4,6% de interes anual"
       }
     },
     {

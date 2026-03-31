@@ -59,6 +59,46 @@
       ]
     },
     {
+      "id": "mach-ahorro-24-7",
+      "nombre": "MACH - Ahorro 24/7",
+      "institucion": "MACHBANK",
+      "tipoCuenta": "Cuenta de ahorro digital",
+      "url": "https://www.machbank.cl/productos/ahorro-e-inversion/ahorro-24-7",
+      "parse": "regex_percent",
+      "regex": "(\\d+[\\.,]\\d+%)\\s+de interes anual",
+      "readBody": true,
+      "ratePeriod": "annual",
+      "minBalance": 0,
+      "payout": "diario",
+      "availability": "Disponible",
+      "maintenance": "$0",
+      "sourceTitle": "MACH Ahorro 24/7",
+      "notes": [
+        "La landing publica vigente muestra 4,6% de interes anual.",
+        "La comunicacion comercial indica que la plata crece todos los dias."
+      ]
+    },
+    {
+      "id": "mach-premium-ahorro-24-7",
+      "nombre": "MACH Premium - Ahorro 24/7",
+      "institucion": "MACHBANK",
+      "tipoCuenta": "Cuenta de ahorro digital",
+      "url": "https://www.machbank.cl/conoce-mach/cuenta-mach/mach-premium",
+      "parse": "regex_percent",
+      "regex": "(\\d+[\\.,]\\d+%)\\s+de interes anual\\s+en Ahorro 24\\/7",
+      "readBody": true,
+      "ratePeriod": "annual",
+      "minBalance": 0,
+      "payout": "diario",
+      "availability": "Requiere plan Premium",
+      "maintenance": "$4.990 / mes",
+      "sourceTitle": "MACH Premium",
+      "notes": [
+        "La pagina de MACH Premium publica 5,1% de interes anual en Ahorro 24/7.",
+        "El comparador muestra rentabilidad bruta y no descuenta el costo mensual del plan Premium."
+      ]
+    },
+    {
       "id": "santander",
       "nombre": "Santander - Cuenta Vista Mas Lucas",
       "institucion": "Santander",
